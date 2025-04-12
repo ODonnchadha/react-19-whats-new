@@ -1,0 +1,59 @@
+import Bids from "@/app/components/Bids";
+import currencyFormatter from "@/helpers/currencyFormatter";
+import Image from "next/image";
+import { Suspense } from "react";
+
+const House = async ({ params }) => {
+  const { id } = await params;
+  const bidsPromise = fetch(`http://localhost:5285/bid/${id}`)
+    .then((r) => r.json());
+  const house = await fetch(`http://localhost:5285/house/${id}`)
+    .then(r => r.json());
+
+  return (
+    <>
+      <title>{house.address}</title>
+      <meta name="author" content="Roland" />
+      <link rel="author" href="https://x.com/rolandguijt/" />
+      <meta name="keywords" content="cheap beautiful" />
+      <div className="row">
+        <div className="col-6">
+          <div className="row">
+            <Image
+              className="img-fluid"
+              width="300"
+              height="200"
+              src={
+                house.photo
+                  ? `/houseImages/${house.photo}.jpeg`
+                  : "/defaultphoto.png"
+              }
+              alt="House pic"
+            />
+          </div>
+        </div>
+        <div className="col-6">
+          <div className="row mt-2">
+            <h5 className="col-12">{house.country}</h5>
+          </div>
+          <div className="row">
+            <h3 className="col-12">{house.address}</h3>
+          </div>
+          <div className="row">
+            <h2 className="themeFontColor col-12">
+              {currencyFormatter.format(house.price)}
+            </h2>
+          </div>
+          <div className="row">
+            <div className="col-12 mt-3">{house.description}</div>
+          </div>
+          <Suspense fallback={<h3>Loading...</h3>}>
+            <Bids house={house} bidsPromise={bidsPromise} />
+          </Suspense>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default House;
