@@ -116,4 +116,31 @@
             - pending. data. method. action.
 
 - IMPROVEMENTS AND ENHANCEMENTS:
-    - 
+    - Preloading resources with client-side rendering.
+        - Browser can preload: URL. Object with resource type.
+            ```javascript
+                preload('https://domain.com/script.js), { as: 'script' })
+            ```
+            - Also: prefetchDNS. preconnect. preloadModule.
+            - And async loading of scripts.
+                ```javascript
+                    <script async={true} src='https://domain.com/script.js' />
+                ```
+    - Enahnced support for the link tag. Hoisted. `precedence="first"`
+        - Advantage of local links:
+            - Suspended state while loading.
+            - Reasoning about CSS gets easier.
+            - Just the CSS needed is loaded.
+    - Refs as Props and Content as a Provider.
+        - Changing value directly does not cause a re-render of the component.
+            ```javascript
+                const ref = useRef(0);
+                const value = ref.current;
+                ref.current = 1;
+            ```
+        - And passed to child components as a simple prop.
+            ```javascript
+                <div>  
+                    <SubmitButton myref={ref} />
+                </div>
+            ```
