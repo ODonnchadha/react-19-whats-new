@@ -80,5 +80,40 @@
         - NOT for beginners.
 
 - FORM ACTIONS AND NEW HOOKS:
+    - `use` New function in the React library.
+        - Instead of useContext. Advantage. Not a hook. Does not need to comply to the rules of hooks.
+            - Can also be used to consume promises while suspending components.
+                - "Loading..." while fetching when stil unresolved. Suspended state until promise resolves.
+                    - `fallback`
+            - Can also be leveraged instead of useEffect in order to suspend. So we don't have to declare state.
+                - Provided that the promise is cached. External library: TanStack React Query.
+    - Controlled inputs. Plumbing. Each input needs to be bound to state. And the change event wired.
+    - Form actions. Inputs with special attention to name. Wrapped with a form tag.
+        -  `action={submitAction}`
+        - Executed when the form is submitted. Receives formData object.
+            - Native to JavaScript. Key/value collection. No state needed. Or maintain it.
+    - `useActionState`
+        - Replaces a call to useState. Slightly more complicated. isPending = true when fn is executed.
+            - newState is then available with state parameter.
+        ```javascript
+            const [state, actionFunction, isPending] = useActionState(fn, initialState);
+            <form action={actionFunction}>
+            </form>
+            const fn(prevState, formData) {
+                return newState;
+            }
+        ```
+        ```javascript
+            const [state, actionFunction, isPending] = useActionState(submit, { error:null, fetch });
+        ```
+    - `useOptimistic` allows for updating the UI immediately without waiting for action completion.
+        - Can only be used when working with actions. State. And a function. Roll-back on error.
+    - `useFormStatus` allows for formstatus destructuring instead of passing props. Nearest form parent.
+        ```javascript
+            const { pending } = useFormStatus();
+        ```
+        - Object properties:
+            - pending. data. method. action.
 
 - IMPROVEMENTS AND ENHANCEMENTS:
+    - 
